@@ -1,8 +1,13 @@
 @echo off
-set /p username="Enter the username whose admin rights you want to remove: "
+set /p username="Enter the username you want to remove from the Administrators group: "
 
-echo Removing admin rights from %username%...
-powershell -Command "Set-LocalUser -Name %username% -IsAdministrator $false"
+echo Removing %username% from the Administrators group...
+net localgroup Administrators %username% /delete
 
-echo Admin rights removed from %username%.
+if %errorlevel% neq 0 (
+    echo Failed to remove %username% from the Administrators group.
+) else (
+    echo %username% removed from the Administrators group.
+)
+
 pause
